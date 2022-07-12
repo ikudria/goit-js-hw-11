@@ -1,1 +1,74 @@
 @import '~node_modules/modern-normalize/modern-normalize.css';
+
+.search-form {
+  background-color: blue;
+  padding: 15px;
+  text-align: center;
+}
+
+.load-more {
+  font-size: 14px;
+  padding: 10px 20px;
+  background-color: blue;
+  color: #ffffff;
+  border: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background-color 250ms linear;
+}
+
+.load-more {
+  display: block;
+  margin: 0 auto;
+}
+
+.load-more.is-hidden {
+  display: none;
+}
+
+.load-more:hover,
+.load-more:focus {
+  background-color: blue;
+}
+
+// gallery styles
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -30px;
+  margin-top: -30px;
+  margin-bottom: 20px;
+}
+
+.photo-card {
+  flex-basis: calc((100% - 120px) / 4);
+  margin-left: 30px;
+  margin-top: 30px;
+  transition: opacity 500ms linear, transform 500ms linear;
+  box-shadow: 2px 5px 5px grey;
+}
+
+.gallery__card.appear {
+  opacity: 1;
+  transform: scale(1);
+}
+
+img {
+  width: 100%;
+  height: 80%;
+  max-width: unset;
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+}
+
+.info-item {
+  font-size: 12px;
+  margin-right: 8px;
+  margin-left: 8px;
+  text-align: center;
+}
