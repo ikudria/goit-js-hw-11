@@ -1,4 +1,5 @@
 import { PixabayApi, PixabayApi } from './js/api-service';
+import Notiflix from 'notiflix';
 import addImageCards from './templates/image-card.hbs';
 
 // access to form and handler setup
@@ -27,11 +28,17 @@ function onSearch(e) {
 
   pixabayApi.fetchImages().then(images => {
     console.log(images);
+    if (images.length === 0) {
+      Notiflix.Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+      loadMoreBtn.classList.add('is-hidden');
+    } else {
+      gallery.innerHTML = addImageCards(images);
+      console.log(pixabayApi);
 
-    gallery.innerHTML = addImageCards(images);
-    console.log(pixabayApi);
-
-    loadMoreBtn.classList.remove('is-hidden');
+      loadMoreBtn.classList.remove('is-hidden');
+    }
   });
 }
 
@@ -48,3 +55,10 @@ function onLoadMore() {
     }
   });
 }
+
+// if (!images) {
+//   loadMoreBtn.classList.add('is-hidden');
+//   Notiflix.Notify.failure(
+//     'Sorry, there are no images matching your search query. Please try again.'
+//   );
+// }
