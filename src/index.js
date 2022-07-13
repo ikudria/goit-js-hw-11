@@ -18,7 +18,7 @@ const gallery = document.querySelector('.gallery');
 const pixabayApi = new PixabayApi();
 // console.log(pixabayApi);
 
-function onSearch(e) {
+async function onSearch(e) {
   e.preventDefault();
 
   const { value } = e.currentTarget.elements.searchQuery;
@@ -26,8 +26,13 @@ function onSearch(e) {
   pixabayApi.setValue(value);
   pixabayApi.page = 1;
 
-  pixabayApi.fetchImages().then(images => {
+  try {
+    const data = await pixabayApi.fetchImages();
+    const totalHits = data.totalHits;
+    const images = data.hits;
     console.log(images);
+    pixabayApi.calcTotalPages(totalHits);
+
     if (images.length === 0) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -39,26 +44,27 @@ function onSearch(e) {
 
       loadMoreBtn.classList.remove('is-hidden');
     }
-  });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function onLoadMore() {
-  pixabayApi.increasePage();
+async function onLoadMore() {
+  pixabayApi.page += 1;
 
-  pixabayApi.fetchImages().then(images => {
+  try {
+    const images = await pixabayApi.fetchImages();
     gallery.insertAdjacentHTML('beforeend', addImageCards(images));
 
     console.log(pixabayApi);
 
-    if (!images) {
+    if (pixabayApi.page === pixabayApi.totalPages) {
       loadMoreBtn.classList.add('is-hidden');
+      Notiflix.Notify.failure(
+        "We're sorry, but you've reached the end of search results."
+      );
     }
-  });
+  } catch (error) {
+    console.log(error);
+  }
 }
-
-// if (!images) {
-//   loadMoreBtn.classList.add('is-hidden');
-//   Notiflix.Notify.failure(
-//     'Sorry, there are no images matching your search query. Please try again.'
-//   );
-// }

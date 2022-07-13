@@ -1,5 +1,4 @@
 'use strict';
-import Notiflix from 'notiflix';
 import axios from 'axios';
 
 export class PixabayApi {
@@ -9,6 +8,7 @@ export class PixabayApi {
   constructor() {
     this.page = 1;
     this.velue = null;
+    this.totalPages = null;
   }
 
   fetchImages() {
@@ -18,29 +18,14 @@ export class PixabayApi {
       orientation: 'horizontal',
       safesearch: 'true',
       q: this.value,
-      per_page: 200,
+      per_page: 40,
       page: this.page,
     });
 
     return axios
       .get(`${this.#BASE_URL}?${search}`)
-      .then(response => response.data.hits)
-      .catch(err =>
-        Notiflix.Notify.failure(
-          "We're sorry, but you've reached the end of search results."
-        )
-      );
-
-    // return fetch(`${this.#BASE_URL}?${search}`)
-    //   .then(response => {
-    //     if (!response.ok) {
-    //       throw Notiflix.Notify.failure(
-    //         'Sorry, there are no images matching your search query. Please try again.'
-    //       );
-    //     }
-    //     return response.json();
-    //   })
-    //   .catch(err => console.log(err));
+      .then(response => response.data)
+      .catch(err => console.log('Error'));
   }
 
   increasePage() {
@@ -49,5 +34,9 @@ export class PixabayApi {
 
   setValue(value) {
     this.value = value;
+  }
+
+  calcTotalPages(totalHits) {
+    this.totalPages = Math.ceil(totalHits / 40);
   }
 }
