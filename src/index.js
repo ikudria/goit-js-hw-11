@@ -30,7 +30,7 @@ async function onSearch(e) {
     const data = await pixabayApi.fetchImages();
     const totalHits = data.totalHits;
     const images = data.hits;
-    console.log(images);
+    // console.log(images);
     pixabayApi.calcTotalPages(totalHits);
 
     if (images.length === 0) {
@@ -40,7 +40,7 @@ async function onSearch(e) {
       loadMoreBtn.classList.add('is-hidden');
     } else {
       gallery.innerHTML = addImageCards(images);
-      console.log(pixabayApi);
+      console.log(pixabayApi.page);
 
       loadMoreBtn.classList.remove('is-hidden');
     }
@@ -53,10 +53,10 @@ async function onLoadMore() {
   pixabayApi.page += 1;
 
   try {
-    const images = await pixabayApi.fetchImages();
-    gallery.insertAdjacentHTML('beforeend', addImageCards(images));
+    const data = await pixabayApi.fetchImages();
+    gallery.insertAdjacentHTML('beforeend', addImageCards(data.hits));
 
-    console.log(pixabayApi);
+    console.log(pixabayApi.page);
 
     if (pixabayApi.page === pixabayApi.totalPages) {
       loadMoreBtn.classList.add('is-hidden');

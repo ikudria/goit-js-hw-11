@@ -18,7 +18,7 @@ export class PixabayApi {
       orientation: 'horizontal',
       safesearch: 'true',
       q: this.value,
-      per_page: 40,
+      per_page: 10,
       page: this.page,
     });
 
@@ -37,6 +37,6 @@ export class PixabayApi {
   }
 
   calcTotalPages(totalHits) {
-    this.totalPages = Math.ceil(totalHits / 40);
+    this.totalPages = Math.ceil(totalHits / 10);
   }
 }
