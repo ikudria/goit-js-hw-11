@@ -21,7 +21,15 @@ const pixabayApi = new PixabayApi();
 async function onSearch(e) {
   e.preventDefault();
 
-  const { value } = e.currentTarget.elements.searchQuery;
+  const value = e.currentTarget.elements.searchQuery.value.trim();
+
+  if (value === '') {
+    Notiflix.Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
+    loadMoreBtn.classList.add('is-hidden');
+    return (gallery.innerHTML = '');
+  }
 
   pixabayApi.setValue(value);
   pixabayApi.page = 1;
@@ -37,6 +45,7 @@ async function onSearch(e) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
+      gallery.innerHTML = '';
       loadMoreBtn.classList.add('is-hidden');
     } else {
       gallery.innerHTML = addImageCards(images);
